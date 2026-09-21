@@ -66,8 +66,8 @@ describe('OpenCode host payload', () => {
     );
     expect(contribution.env).toMatchObject({
       OPENCODE_MODEL: 'openai/test-model',
-      NO_PROXY: 'internal.example,127.0.0.1,localhost',
-      no_proxy: 'lower.example,127.0.0.1,localhost',
+      NO_PROXY: 'internal.example,127.0.0.1,localhost,host.docker.internal',
+      no_proxy: 'lower.example,127.0.0.1,localhost,host.docker.internal',
     });
     expect(contribution.mounts).toEqual([]);
     expect(fs.existsSync(context().sessionDir)).toBe(false);

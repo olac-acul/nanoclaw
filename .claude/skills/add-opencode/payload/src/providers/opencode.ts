@@ -6,7 +6,7 @@
  * OPENCODE_* env vars tell the CLI which provider/model to use at runtime
  * (read on the host, injected into the container). NO_PROXY / no_proxy are
  * merged with host values so the in-container OpenCode client can talk to
- * 127.0.0.1 even when HTTPS_PROXY is set by OneCLI.
+ * loopback and host-only services even when HTTPS_PROXY is set by OneCLI.
  */
 import fs from 'fs';
 import path from 'path';
@@ -49,8 +49,8 @@ registerProviderContainerConfig('opencode', (ctx) => {
 
   const env: Record<string, string> = {
     XDG_DATA_HOME: '/opencode-xdg',
-    NO_PROXY: mergeNoProxy(ctx.hostEnv.NO_PROXY, '127.0.0.1,localhost'),
-    no_proxy: mergeNoProxy(ctx.hostEnv.no_proxy, '127.0.0.1,localhost'),
+    NO_PROXY: mergeNoProxy(ctx.hostEnv.NO_PROXY, '127.0.0.1,localhost,host.docker.internal'),
+    no_proxy: mergeNoProxy(ctx.hostEnv.no_proxy, '127.0.0.1,localhost,host.docker.internal'),
   };
   // The host process does not load `.env` into process.env (readEnvFile keeps
   // file values out of child processes), and the service units set no
