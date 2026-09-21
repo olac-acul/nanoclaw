@@ -149,6 +149,8 @@ source file or shared agent image is modified.
   Infomaniak and rerun `configure`; do not use the Manager login password.
 - Broker service failure: inspect
   `journalctl --user -u nanoclaw-infomaniak-mail.service -n 80 --no-pager`.
+- An older generated unit that exits with `status=218/CAPABILITIES` inside an
+  unprivileged LXC must be regenerated with the current installer and restarted.
 - Container health failure: confirm `NANOCLAW_EGRESS_LOCKDOWN=false`, Docker's
   `host-gateway` mapping, and the actual `docker0` address.
 - MCP tool absent: inspect the selected group's configuration and restart it.

@@ -16,6 +16,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 MODULE_PATH = Path(__file__).with_name("infomaniak_mail_broker.py")
+INSTALLER_PATH = Path(__file__).with_name("install_service.py")
 SPEC = importlib.util.spec_from_file_location("infomaniak_mail_broker", MODULE_PATH)
 assert SPEC and SPEC.loader
 broker_module = importlib.util.module_from_spec(SPEC)
@@ -92,6 +93,23 @@ class BrokerTests(unittest.TestCase):
         self.assertNotIn("import smtplib", source)
         self.assertNotIn('.store(', source)
         self.assertIn('select("inbox", readonly=true)', source)
+
+    def test_service_hardening_is_compatible_with_unprivileged_lxc(self):
+        source = INSTALLER_PATH.read_text(encoding="utf-8")
+        for unsupported in (
+            "PrivateDevices=true",
+            "ProtectKernelModules=true",
+            "ProtectKernelLogs=true",
+        ):
+            self.assertNotIn(unsupported, source)
+        for retained in (
+            "NoNewPrivileges=true",
+            "PrivateTmp=true",
+            "ProtectSystem=strict",
+            "ProtectHome=read-only",
+            "RestrictSUIDSGID=true",
+        ):
+            self.assertIn(retained, source)
 
     def test_body_reads_use_peek_and_are_labeled_untrusted(self):
         with tempfile.TemporaryDirectory() as temporary:
