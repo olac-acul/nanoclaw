@@ -2,9 +2,9 @@ import { spawnSync } from 'node:child_process';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 
-import { readEnvFile } from '../src/env.js';
-import { upsertEnvVars } from '../setup/set-env.js';
-import { discoverLocalModelIds, validateModel } from './opencode-model-config.js';
+import { readEnvFile } from '../../../../src/env.js';
+import { upsertEnvVars } from '../../../../setup/set-env.js';
+import { discoverLocalModelIds, validateModel } from '../../../../scripts/opencode-model-config.js';
 
 const CONFIG_KEYS = [
   'OPENCODE_PROVIDER',
